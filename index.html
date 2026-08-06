@@ -58,6 +58,8 @@
     padding:8px 12px 10px; background:rgba(6,11,24,0.94); border-top:1px solid #334466;
     transform:translateY(100%); transition:transform 0.3s; }
   #danmaku-bar.show { transform:translateY(0); }
+  #danmaku-bar.show ~ #dm-toggle { bottom:56px !important; }
+  #danmaku-bar.show ~ #dm-hide { bottom:56px !important; }
   #danmaku-bar input { flex:1; padding:6px 12px; border:1px solid #445577; border-radius:20px;
     background:#0d1225; color:#e8e8f0; font-size:0.9rem; outline:none; }
   #danmaku-bar button { padding:6px 18px; border:none; border-radius:20px; background:#00bcd4;
@@ -505,16 +507,11 @@ function toggleDmStage() {
 // 切换输入栏
 function toggleDm() {
   var bar = document.getElementById('danmaku-bar');
-  var btn = document.getElementById('dm-toggle');
-  var hideBtn = document.getElementById('dm-hide');
   bar.classList.toggle('show');
   if (bar.classList.contains('show')) {
-    btn.style.bottom = '56px';
-    hideBtn.style.bottom = '56px';
+    // 打开输入栏时，自动开启弹幕
+    if (!dmVisible) toggleDmStage();
     document.getElementById('dm-input').focus();
-  } else {
-    btn.style.bottom = '';
-    hideBtn.style.bottom = '';
   }
 }
 
