@@ -46,12 +46,12 @@
     .legend-panel label { font-size: 0.7rem; }
     #search { width: 140px !important; font-size: 0.7rem !important; }
     #nearby-btn { font-size: 0.7rem; padding: 2px 10px; }
-    .nearby-panel { top: 60px; left: 10px; right: 10px; min-width: auto; max-height: 50vh; padding: 10px 12px; border-radius:6px; }
-    .nearby-panel h3 { font-size: 0.8rem; margin-bottom: 4px; }
-    .nearby-panel .center-info { font-size: 0.65rem; margin-bottom: 6px; }
-    .nearby-panel .item { font-size: 0.55rem; padding: 3px 5px; }
-    .nearby-close { font-size: 0.7rem; top: 4px; right: 8px; }
-    .nearby-subtitle { font-size: 0.45rem !important; margin-bottom: 4px !important; }
+    .nearby-panel { top: 55px; left: 10px; right: 10px; min-width: auto; max-height: 45vh; padding: 6px 8px; border-radius:5px; }
+    .nearby-panel h3 { font-size: 0.5rem; margin-bottom: 2px; }
+    .nearby-panel .center-info { font-size: 0.4rem; margin-bottom: 3px; }
+    .nearby-panel .item { font-size: 0.35rem; padding: 2px 3px; }
+    .nearby-close { font-size: 0.45rem; top: 3px; right: 5px; }
+    .nearby-subtitle { font-size: 0.28rem !important; margin-bottom: 2px !important; }
   }
   /* ====== 弹幕 ====== */
   #danmaku-stage { position:fixed; top:0; left:0; width:100%; height:100%; pointer-events:none; z-index:100; overflow:hidden; }
@@ -88,12 +88,12 @@
     .legend-panel label { font-size: 0.65rem; }
     #search { width: 120px !important; font-size: 0.65rem !important; padding: 2px 6px !important; }
     #nearby-btn { font-size: 0.65rem; padding: 2px 8px; }
-    .nearby-panel { top: 50px; left: 10px; right: 10px; min-width: auto; max-height: 70vh; padding: 8px 10px; border-radius:5px; }
-    .nearby-panel h3 { font-size: 0.7rem; margin-bottom: 3px; }
-    .nearby-panel .center-info { font-size: 0.55rem; margin-bottom: 4px; }
-    .nearby-panel .item { font-size: 0.5rem; padding: 2px 4px; }
-    .nearby-close { font-size: 0.65rem; top: 3px; right: 6px; }
-    .nearby-subtitle { font-size: 0.4rem !important; margin-bottom: 3px !important; }
+    .nearby-panel { top: 45px; left: 10px; right: 10px; min-width: auto; max-height: 55vh; padding: 5px 6px; border-radius:4px; }
+    .nearby-panel h3 { font-size: 0.45rem; margin-bottom: 2px; }
+    .nearby-panel .center-info { font-size: 0.35rem; margin-bottom: 2px; }
+    .nearby-panel .item { font-size: 0.3rem; padding: 1px 3px; }
+    .nearby-close { font-size: 0.4rem; top: 2px; right: 4px; }
+    .nearby-subtitle { font-size: 0.25rem !important; margin-bottom: 2px !important; }
   }
 </style>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -355,8 +355,10 @@ const MAKER_COLORS = {
     var py = chartRect.top + layoutMeta.margin.t + (1 - yRatio) * (chartRect.height - layoutMeta.margin.t - layoutMeta.margin.b);
 
     // Position to the right of the point, avoid covering it
-    var left = Math.min(window.innerWidth - 450, Math.max(10, px + 30));
-    var top = Math.min(window.innerHeight - 200, Math.max(10, py - 80));
+    var isMobile = window.innerWidth < 768;
+    var panelW = isMobile ? window.innerWidth - 20 : 420;
+    var left = Math.max(10, Math.min(window.innerWidth - panelW - 10, px + 30));
+    var top = Math.min(window.innerHeight - 120, Math.max(10, py - 40));
     nearbyPanel.style.left = left + 'px';
     nearbyPanel.style.top = top + 'px';
 
