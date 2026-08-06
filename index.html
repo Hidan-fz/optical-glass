@@ -53,6 +53,7 @@
     text-shadow:0 0 6px rgba(0,0,0,0.8), 0 0 2px rgba(0,0,0,0.5);
     animation:dm-scroll 8s linear forwards; pointer-events:none; font-size:1rem; }
   @keyframes dm-scroll { from{transform:translateX(105vw);} to{transform:translateX(-100%);} }
+  .danmaku-msg { animation-duration:12s; opacity:0.5; }
   #danmaku-bar { position:fixed; bottom:0; left:0; right:0; z-index:200; display:flex; gap:8px;
     padding:8px 12px 10px; background:rgba(6,11,24,0.94); border-top:1px solid #334466;
     transform:translateY(100%); transition:transform 0.3s; }
@@ -500,7 +501,7 @@ setTimeout(function() {
 <!-- 弹幕层 -->
 <div id="danmaku-stage"></div>
 <div id="danmaku-bar">
-  <input id="dm-input" type="text" placeholder="发条弹幕吧…" maxlength="40" onkeydown="if(event.key==='Enter')sendDm()">
+  <input id="dm-input" type="text" placeholder="友善发言，遵守中国法律法规…" maxlength="40" onkeydown="if(event.key==='Enter')sendDm()">
   <button onclick="sendDm()">发送</button>
 </div>
 <button id="dm-toggle" onclick="toggleDm()" title="弹幕">💬</button>
