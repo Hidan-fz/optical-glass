@@ -69,6 +69,7 @@
     .danmaku-msg { font-size:0.85rem; }
     #danmaku-bar { padding:6px 8px 8px; }
     #dm-toggle { bottom:10px; right:10px; width:36px; height:36px; font-size:1rem; }
+    #dm-hide { bottom:54px; right:10px; width:36px; height:36px; font-size:0.9rem; }
   }
   @media (max-width: 900px) and (orientation: landscape) {
     .header { padding: 4px 10px 0; }
@@ -491,16 +492,28 @@ async function sendDm() {
   await supabase.from('danmaku').insert({text:text, color:color});
 }
 
+// 切换弹幕显示/隐藏
+var dmVisible = true;
+function toggleDmStage() {
+  dmVisible = !dmVisible;
+  document.getElementById('danmaku-stage').style.display = dmVisible ? '' : 'none';
+  document.getElementById('dm-hide').textContent = dmVisible ? '👁' : '👁‍🗨';
+  document.getElementById('dm-hide').style.opacity = dmVisible ? '1' : '0.5';
+}
+
 // 切换输入栏
 function toggleDm() {
   var bar = document.getElementById('danmaku-bar');
   var btn = document.getElementById('dm-toggle');
+  var hideBtn = document.getElementById('dm-hide');
   bar.classList.toggle('show');
   if (bar.classList.contains('show')) {
     btn.style.bottom = '56px';
+    hideBtn.style.bottom = '106px';
     document.getElementById('dm-input').focus();
   } else {
     btn.style.bottom = '';
+    hideBtn.style.bottom = '';
   }
 }
 
@@ -530,7 +543,8 @@ function toggleDm() {
   <button onclick="sendDm()">发送</button>
   <button onclick="toggleDm()" style="background:#3a4a6a;color:#aab;padding:6px 16px;border-radius:20px;border:none;font-size:0.85rem;cursor:pointer;">✕</button>
 </div>
-<button id="dm-toggle" onclick="toggleDm()" title="弹幕">💬</button>
+<button id="dm-hide" onclick="toggleDmStage()" title="显示/隐藏弹幕" style="position:fixed;bottom:64px;right:14px;z-index:201;width:42px;height:42px;border-radius:50%;background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.2);color:#fff;font-size:1rem;cursor:pointer;">👁</button>
+<button id="dm-toggle" onclick="toggleDm()" title="发弹幕">💬</button>
 
 </body>
 </html>
