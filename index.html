@@ -17,7 +17,7 @@
   .toast.show { opacity: 1; }
   #nearby-btn { padding:4px 14px;border:1px solid #ffd740;border-radius:4px;background:transparent;color:#ffd740;font-size:0.78rem;cursor:pointer; }
   #nearby-btn.active { background:#ffd740;color:#000; }
-  .nearby-panel { display:none; position:fixed; top:120px; left:60px; background:#0d1830; border:1px solid #334466; border-radius:10px; padding:22px 26px; z-index:1000; max-height:600px; overflow-y:auto; min-width:420px; box-shadow:0 0 30px rgba(0,0,0,0.6); cursor:default; position:fixed; }
+  .nearby-panel { display:none; position:fixed; top:120px; left:60px; background:#0d1830; border:1px solid #334466; border-radius:10px; padding:22px 26px; z-index:1000; max-height:600px; overflow-y:auto; min-width:420px; max-width:90vw; box-shadow:0 0 30px rgba(0,0,0,0.6); cursor:default; position:fixed; }
   .nearby-panel.show { display:block; }
   .nearby-panel h3 { color:#e8e8f0; font-size:1.5rem; margin-bottom:8px; cursor:move; user-select:none; }
   .nearby-close { position:absolute; top:8px; right:12px; color:#8899bb; font-size:1.2rem; cursor:pointer; line-height:1; }
@@ -30,6 +30,13 @@
   .legend-panel { display: flex; justify-content: center; gap: 28px; flex-wrap: wrap; padding: 8px 20px 6px; }
   .legend-panel label { display: flex; align-items: center; gap: 6px; color: #8899bb; font-size: 0.8rem; cursor: pointer; }
   .dot { display: inline-block; width: 10px; height: 10px; border-radius: 50%; box-shadow: 0 0 6px currentColor; }
+
+@media (max-width: 768px) {
+  .nearby-panel { left:2.5vw !important; right:2.5vw !important; min-width:unset !important; max-width:95vw !important; top:80px !important; padding:16px 14px !important; }
+  .nearby-panel h3 { font-size:1.2rem !important; }
+  .nearby-panel .center-info { font-size:0.95rem !important; }
+  .nearby-panel .item { font-size:0.85rem !important; padding:4px 6px !important; }
+}
 </style>
 </head>
 <body>
