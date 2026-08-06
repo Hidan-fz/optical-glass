@@ -493,10 +493,14 @@ async function sendDm() {
 
 // 切换输入栏
 function toggleDm() {
-  document.getElementById('danmaku-bar').classList.toggle('show');
-  var inp = document.getElementById('dm-input');
-  if (document.getElementById('danmaku-bar').classList.contains('show')) {
-    inp.focus();
+  var bar = document.getElementById('danmaku-bar');
+  var btn = document.getElementById('dm-toggle');
+  bar.classList.toggle('show');
+  if (bar.classList.contains('show')) {
+    btn.style.bottom = '56px';
+    document.getElementById('dm-input').focus();
+  } else {
+    btn.style.bottom = '';
   }
 }
 
