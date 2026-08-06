@@ -3,6 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, viewport-fit=cover">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
 <title>光学玻璃 nd-vd 图</title>
 <script>/**
 * plotly.js v2.35.2
@@ -356,11 +359,23 @@ const MAKER_COLORS = {
 
     // Position to the right of the point, avoid covering it
     var isMobile = window.innerWidth < 768;
-    var panelW = isMobile ? window.innerWidth - 20 : 420;
-    var left = Math.max(10, Math.min(window.innerWidth - panelW - 10, px + 30));
-    var top = Math.min(window.innerHeight - 120, Math.max(10, py - 40));
-    nearbyPanel.style.left = left + 'px';
-    nearbyPanel.style.top = top + 'px';
+    if (isMobile) {
+      // Mobile: stretch full-width with 10px margins, place near chart area
+      nearbyPanel.style.left = '10px';
+      nearbyPanel.style.right = '10px';
+      nearbyPanel.style.width = 'auto';
+      nearbyPanel.style.maxWidth = 'none';
+      nearbyPanel.style.top = Math.min(window.innerHeight - 180, Math.max(50, py + 10)) + 'px';
+    } else {
+      // Desktop: position near the clicked point
+      nearbyPanel.style.right = 'auto';
+      nearbyPanel.style.width = '';
+      nearbyPanel.style.maxWidth = '';
+      var left = Math.max(10, Math.min(window.innerWidth - 440, px + 30));
+      var top = Math.min(window.innerHeight - 200, Math.max(10, py - 80));
+      nearbyPanel.style.left = left + 'px';
+      nearbyPanel.style.top = top + 'px';
+    }
 
     var html = '<span class="nearby-close" id="nearby-close">✕</span>';
     html += '<h3 id="nearby-drag-handle">' + name + '</h3>';
