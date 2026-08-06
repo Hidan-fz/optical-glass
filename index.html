@@ -528,6 +528,7 @@ function toggleDm() {
 <div id="danmaku-bar">
   <input id="dm-input" type="text" placeholder="友善发言，遵守中国法律法规…" maxlength="40" onkeydown="if(event.key==='Enter')sendDm()">
   <button onclick="sendDm()">发送</button>
+  <button onclick="toggleDm()" style="background:#3a4a6a;color:#aab;padding:6px 16px;border-radius:20px;border:none;font-size:0.85rem;cursor:pointer;">✕</button>
 </div>
 <button id="dm-toggle" onclick="toggleDm()" title="弹幕">💬</button>
 
