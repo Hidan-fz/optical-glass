@@ -47,6 +47,17 @@
     #nearby-btn { font-size: 0.7rem; padding: 2px 10px; }
     .nearby-panel { top: 60px; left: 10px; right: 10px; min-width: auto; max-height: 50vh; padding: 14px 16px; }
   }
+  @media (max-width: 900px) and (orientation: landscape) {
+    .header { padding: 4px 10px 0; }
+    .header h1 { font-size: 1rem; }
+    .header p { font-size: 0.65rem; margin-top: 0; }
+    .header p:last-of-type { display: none; }
+    .legend-panel { gap: 8px; padding: 2px 8px; }
+    .legend-panel label { font-size: 0.65rem; }
+    #search { width: 120px !important; font-size: 0.65rem !important; padding: 2px 6px !important; }
+    #nearby-btn { font-size: 0.65rem; padding: 2px 8px; }
+    .nearby-panel { top: 50px; left: 10px; right: 10px; min-width: auto; max-height: 70vh; padding: 10px 14px; }
+  }
 </style>
 </head>
 <body>
@@ -205,6 +216,17 @@ const MAKER_COLORS = {
   var chartEl = document.getElementById('chart');
   var searchEl = document.getElementById('search');
   Plotly.newPlot('chart', buildTraces(''), layout, config);
+
+  // 横屏/竖屏切换 + 微信里 resize 修复
+  var resizeTimer;
+  window.addEventListener('orientationchange', function() {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(function() { Plotly.Plots.resize(chartEl); }, 300);
+  });
+  window.addEventListener('resize', function() {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(function() { Plotly.Plots.resize(chartEl); }, 150);
+  });
 
   function render() {
     var term = searchEl.value.trim();
