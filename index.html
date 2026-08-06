@@ -31,11 +31,17 @@
   .legend-panel label { display: flex; align-items: center; gap: 6px; color: #8899bb; font-size: 0.8rem; cursor: pointer; }
   .dot { display: inline-block; width: 10px; height: 10px; border-radius: 50%; box-shadow: 0 0 6px currentColor; }
 
-@media (max-width: 768px) {
-  .nearby-panel { left:2.5vw !important; right:2.5vw !important; min-width:unset !important; max-width:95vw !important; top:80px !important; padding:16px 14px !important; }
-  .nearby-panel h3 { font-size:1.2rem !important; }
-  .nearby-panel .center-info { font-size:0.95rem !important; }
-  .nearby-panel .item { font-size:0.85rem !important; padding:4px 6px !important; }
+@media (max-width: 1000px) {
+  .nearby-panel { left:3vw !important; right:3vw !important; min-width:unset !important; max-width:94vw !important; top:70px !important; padding:16px 14px !important; max-height:55vh !important; }
+  .nearby-panel h3 { font-size:1.1rem !important; }
+  .nearby-panel .center-info { font-size:0.9rem !important; }
+  .nearby-panel .item { font-size:0.82rem !important; padding:3px 5px !important; }
+}
+@media (max-width: 500px) {
+  .nearby-panel { left:2vw !important; right:2vw !important; max-width:96vw !important; top:60px !important; padding:12px 10px !important; max-height:50vh !important; }
+  .nearby-panel h3 { font-size:1rem !important; }
+  .nearby-panel .center-info { font-size:0.82rem !important; }
+  .nearby-panel .item { font-size:0.78rem !important; }
 }
 </style>
 </head>
