@@ -32,6 +32,7 @@
   .nearby-panel .center-info { color:#8899bb; font-size:1.1rem; margin-bottom:12px; }
   .nearby-panel .item { color:#8899bb; font-size:1rem; padding:5px 8px; cursor:pointer; border-radius:3px; }
   .nearby-panel .item:hover { background:#1a3050; color:#e8e8f0; }
+  .nearby-subtitle { color:#8899bb; font-size:0.75rem; margin-bottom:6px; }
   #overlay { display:none; position:fixed; top:0;left:0;width:100%;height:100%;z-index:999; }
   #overlay.show { display:block; }
   .legend-panel { display: flex; justify-content: center; gap: 28px; flex-wrap: wrap; padding: 8px 20px 6px; }
@@ -45,7 +46,12 @@
     .legend-panel label { font-size: 0.7rem; }
     #search { width: 140px !important; font-size: 0.7rem !important; }
     #nearby-btn { font-size: 0.7rem; padding: 2px 10px; }
-    .nearby-panel { top: 60px; left: 10px; right: 10px; min-width: auto; max-height: 50vh; padding: 14px 16px; }
+    .nearby-panel { top: 60px; left: 10px; right: 10px; min-width: auto; max-height: 50vh; padding: 10px 12px; border-radius:6px; }
+    .nearby-panel h3 { font-size: 0.8rem; margin-bottom: 4px; }
+    .nearby-panel .center-info { font-size: 0.65rem; margin-bottom: 6px; }
+    .nearby-panel .item { font-size: 0.55rem; padding: 3px 5px; }
+    .nearby-close { font-size: 0.7rem; top: 4px; right: 8px; }
+    .nearby-subtitle { font-size: 0.45rem !important; margin-bottom: 4px !important; }
   }
   /* ====== 弹幕 ====== */
   #danmaku-stage { position:fixed; top:0; left:0; width:100%; height:100%; pointer-events:none; z-index:100; overflow:hidden; }
@@ -82,7 +88,12 @@
     .legend-panel label { font-size: 0.65rem; }
     #search { width: 120px !important; font-size: 0.65rem !important; padding: 2px 6px !important; }
     #nearby-btn { font-size: 0.65rem; padding: 2px 8px; }
-    .nearby-panel { top: 50px; left: 10px; right: 10px; min-width: auto; max-height: 70vh; padding: 10px 14px; }
+    .nearby-panel { top: 50px; left: 10px; right: 10px; min-width: auto; max-height: 70vh; padding: 8px 10px; border-radius:5px; }
+    .nearby-panel h3 { font-size: 0.7rem; margin-bottom: 3px; }
+    .nearby-panel .center-info { font-size: 0.55rem; margin-bottom: 4px; }
+    .nearby-panel .item { font-size: 0.5rem; padding: 2px 4px; }
+    .nearby-close { font-size: 0.65rem; top: 3px; right: 6px; }
+    .nearby-subtitle { font-size: 0.4rem !important; margin-bottom: 3px !important; }
   }
 </style>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -352,7 +363,7 @@ const MAKER_COLORS = {
     var html = '<span class="nearby-close" id="nearby-close">✕</span>';
     html += '<h3 id="nearby-drag-handle">' + name + '</h3>';
     html += '<div class="center-info">nd=' + ndVal + '  vd=' + vdVal + '</div>';
-    html += '<div style="color:#8899bb;font-size:0.75rem;margin-bottom:6px;">nd±0.03  vd±1 范围内共 ' + nearby.length + ' 种</div>';
+    html += '<div class="nearby-subtitle">nd±0.03  vd±1 范围内共 ' + nearby.length + ' 种</div>';
     nearby.forEach(function(d) {
       html += '<div class="item" data-name="' + d.name + '">' + d.name + '  nd=' + d.nd + '  vd=' + d.vd + '</div>';
     });
