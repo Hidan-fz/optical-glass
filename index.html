@@ -453,11 +453,36 @@ function spawnDm(text, color) {
   });
 }
 
+// 敏感词过滤
+var bannedWords = [
+  '赌博','赌场','博彩','下注','赌钱','六合彩','赌球','彩票投注',
+  '毒品','白粉','海洛因','冰毒','大麻','吸毒','贩毒','摇头丸',
+  '色情','裸体','裸聊','约炮','嫖娼','卖淫','成人视频',
+  '枪支','手枪','弹药','炸药','炸弹',
+  '翻墙','VPN','科学上网',
+  '反动','颠覆','分裂国家','台独','藏独','疆独','法轮功','falun',
+  '传销','诈骗','洗钱','高利贷',
+];
+function dmFilter(text) {
+  var t = text.toLowerCase().replace(/\s/g,'');
+  for (var i = 0; i < bannedWords.length; i++) {
+    if (t.indexOf(bannedWords[i]) !== -1) return true;
+  }
+  // 检测 URL/广告
+  if (/https?:\/\/|www\.|[a-z0-9]+\.(com|cn|net|cc|xyz|top|vip|club|wang|site)/i.test(t)) return true;
+  return false;
+}
+
 // 发送弹幕 → Supabase
 async function sendDm() {
   var inp = document.getElementById('dm-input');
   var text = inp.value.trim();
   if (!text || text.length > 40) return;
+  if (dmFilter(text)) {
+    showToast('内容违规，禁止发送');
+    inp.value = '';
+    return;
+  }
   inp.value = '';
 
   var color = dmColors[Math.floor(Math.random()*dmColors.length)];
