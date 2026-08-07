@@ -22,14 +22,29 @@
   .nearby-panel h3 { color:#e8e8f0; font-size:1.5rem; margin-bottom:8px; cursor:move; user-select:none; }
   .nearby-close { position:absolute; top:8px; right:12px; color:#8899bb; font-size:1.2rem; cursor:pointer; line-height:1; }
   .nearby-close:hover { color:#ff4d6a; }
-  .nearby-panel .center-info { color:#8899bb; font-size:1.1rem; margin-bottom:12px; }
-  .nearby-panel .item { color:#8899bb; font-size:1rem; padding:5px 8px; cursor:pointer; border-radius:3px; }
+  .nearby-panel .center-info { color:#8899bb; font-size:1.1rem; margin-bottom:12px; } .nearby-panel .center-info span { margin-right:16px; }
+  .nearby-panel .item { color:#8899bb; font-size:1rem; padding:5px 8px; cursor:pointer; border-radius:3px; display:flex; gap:0; } .nearby-panel .item-name { flex:1; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; } .nearby-panel .item-nd, .nearby-panel .item-vd { flex-shrink:0; text-align:left; width:72px; }
   .nearby-panel .item:hover { background:#1a3050; color:#e8e8f0; }
   #overlay { display:none; position:fixed; top:0;left:0;width:100%;height:100%;z-index:999; }
   #overlay.show { display:block; }
   .legend-panel { display: flex; justify-content: center; gap: 28px; flex-wrap: wrap; padding: 8px 20px 6px; }
   .legend-panel label { display: flex; align-items: center; gap: 6px; color: #8899bb; font-size: 0.8rem; cursor: pointer; }
   .dot { display: inline-block; width: 10px; height: 10px; border-radius: 50%; box-shadow: 0 0 6px currentColor; }
+
+@media (max-width: 1000px) {
+  .nearby-panel { left:3vw !important; right:3vw !important; min-width:unset !important; max-width:94vw !important; top:70px !important; padding:16px 14px !important; max-height:55vh !important; }
+  .nearby-panel h3 { font-size:1.1rem !important; }
+  .nearby-panel .center-info { font-size:0.9rem !important; }
+  .nearby-panel .item { font-size:0.82rem !important; padding:3px 5px !important; }
+  .nearby-panel .item-nd, .nearby-panel .item-vd { width:62px !important; }
+}
+@media (max-width: 500px) {
+  .nearby-panel { left:2vw !important; right:2vw !important; max-width:96vw !important; top:60px !important; padding:12px 10px !important; max-height:50vh !important; }
+  .nearby-panel h3 { font-size:1rem !important; }
+  .nearby-panel .center-info { font-size:0.82rem !important; }
+  .nearby-panel .item { font-size:0.78rem !important; }
+  .nearby-panel .item-nd, .nearby-panel .item-vd { width:58px !important; font-size:0.76rem !important; }
+}
 </style>
 </head>
 <body>
@@ -295,10 +310,10 @@ const MAKER_COLORS = {
 
     var html = '<span class="nearby-close" id="nearby-close">✕</span>';
     html += '<h3 id="nearby-drag-handle">' + name + '</h3>';
-    html += '<div class="center-info">nd=' + ndVal + '  vd=' + vdVal + '</div>';
+    html += '<div class="center-info"><span>nd=' + ndVal + '</span><span>vd=' + vdVal + '</span></div>';
     html += '<div style="color:#8899bb;font-size:0.75rem;margin-bottom:6px;">nd±0.03  vd±1 范围内共 ' + nearby.length + ' 种</div>';
     nearby.forEach(function(d) {
-      html += '<div class="item" data-name="' + d.name + '">' + d.name + '  nd=' + d.nd + '  vd=' + d.vd + '</div>';
+      html += '<div class="item" data-name="' + d.name + '"><span class="item-name">' + d.name + '</span><span class="item-nd">nd=' + d.nd + '</span><span class="item-vd">vd=' + d.vd + '</span></div>';
     });
     nearbyPanel.innerHTML = html;
     nearbyPanel.classList.add('show');
