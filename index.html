@@ -51,7 +51,7 @@
 <div class="header">
   <h1>光学玻璃 nd–vd 图</h1>
   <p>材料库更新至 2026-08-07 · 共 <span id="total">817</span> 种玻璃</p>
-  <p style="font-size:0.75rem;color:#8899bb;">作者：Hidan · 光学边界QQ群：<span id="qq-group" style="cursor:pointer;text-decoration:underline;" onclick="copyQQ()">1082755388</span></p>
+  <p style="font-size:0.75rem;color:#8899bb;">作者：Hidan · 光学边界QQ群：<span id="qq-group" style="cursor:pointer;" onclick="copyQQ()">1082755388</span></p>
 </div>
 <div style="display:flex;align-items:center;justify-content:center;gap:20px;flex-wrap:wrap;padding:6px 20px;">
   <div class="legend-panel" id="legend" style="padding:0;"></div>
@@ -264,7 +264,9 @@ const MAKER_COLORS = {
   var toastTimer;
   function copyQQ() {
   navigator.clipboard.writeText('1082755388').then(function() {
-    showToast('QQ群号已复制：1082755388');
+    showToast('已复制 QQ群号：1082755388');
+  }).catch(function() {
+    showToast('复制失败');
   });
 }
 
