@@ -51,7 +51,7 @@
 <div class="header">
   <h1>光学玻璃 nd–vd 图</h1>
   <p>材料库更新至 2026-08-07 · 共 <span id="total">817</span> 种玻璃</p>
-  <p style="font-size:0.75rem;color:#8899bb;">作者：Hidan · 光学边界QQ群：<span id="qq-group" style="cursor:pointer;" onclick="copyQQ()">1082755388</span></p>
+  <p style="font-size:0.75rem;color:#8899bb;">作者：Hidan · 光学边界QQ群：<span id="qq-group" style="cursor:pointer;">1082755388</span></p>
 </div>
 <div style="display:flex;align-items:center;justify-content:center;gap:20px;flex-wrap:wrap;padding:6px 20px;">
   <div class="legend-panel" id="legend" style="padding:0;"></div>
@@ -263,11 +263,27 @@ const MAKER_COLORS = {
   var toast = document.getElementById('toast');
   var toastTimer;
   function copyQQ() {
-  navigator.clipboard.writeText('1082755388').then(function() {
-    showToast('已复制 QQ群号：1082755388');
-  }).catch(function() {
-    showToast('复制失败');
-  });
+  var text = '1082755388';
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(text).then(function() {
+      showToast('已复制 QQ群号：' + text);
+    }).catch(function() {
+      fallbackCopy(text);
+    });
+  } else {
+    fallbackCopy(text);
+  }
+}
+function fallbackCopy(text) {
+  var ta = document.createElement('textarea');
+  ta.value = text;
+  ta.style.position = 'fixed';
+  ta.style.left = '-9999px';
+  document.body.appendChild(ta);
+  ta.select();
+  try { document.execCommand('copy'); showToast('已复制 QQ群号：' + text); }
+  catch(e) { showToast('复制失败'); }
+  document.body.removeChild(ta);
 }
 
 function showToast(msg) {
@@ -391,6 +407,11 @@ function showToast(msg) {
       });
     }, 50);
   });
+
+  var qqEl = document.getElementById('qq-group');
+  if (qqEl) {
+    qqEl.addEventListener('click', copyQQ);
+  }
 })();
 </script>
 </body>
