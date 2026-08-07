@@ -363,7 +363,8 @@ function showToast(msg) {
     overlay.classList.remove('show');
   }
 
-  function showNearby(name, ndVal, vdVal) {
+  var lastNearbyName = null, lastNdVal = null, lastVdVal = null;
+  function showNearby(name, ndVal, vdVal) { lastNearbyName=name; lastNdVal=ndVal; lastVdVal=vdVal;
     var ndTol = parseFloat(document.getElementById('nd-tol').value) || 0.03;
     var vdTol = parseFloat(document.getElementById('vd-tol').value) || 1;
     var nearby = [];
@@ -407,6 +408,9 @@ function showToast(msg) {
   }
 
   // Delegate clicks on panel
+  function refreshNearby() { if (lastNearbyName) showNearby(lastNearbyName, lastNdVal, lastVdVal); }
+  document.getElementById('nd-tol').addEventListener('input', refreshNearby);
+  document.getElementById('vd-tol').addEventListener('input', refreshNearby);
   nearbyPanel.addEventListener('click', function(e) {
     if (e.target.closest('#nearby-close')) {
       closeNearby();
@@ -446,7 +450,7 @@ function showToast(msg) {
   });
   document.addEventListener('mouseup', function() { dragInfo = null; });
 
-  overlay.addEventListener('click', closeNearby);
+  overlay.addEventListener('click', function(e) { if (e.target.id === 'nd-tol' || e.target.id === 'vd-tol') return; closeNearby(); });
 
   chartEl.on('plotly_click', function(evt) {
     if (!evt || !evt.points || evt.points.length === 0) return;
