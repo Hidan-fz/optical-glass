@@ -370,17 +370,44 @@ function showToast(msg) {
     var html = '<span class="nearby-close" id="nearby-close">✕</span>';
     html += '<h3 id="nearby-drag-handle">' + name + '</h3>';
     html += '<div class="center-info"><span>nd=' + ndVal + '</span><span>vd=' + vdVal + '</span></div>';
-    html += '<div style="color:#8899bb;font-size:0.75rem;margin-bottom:6px;">nd±' + ndTol + '  vd±' + vdTol + ' 范围内共 ' + nearby.length + ' 种</div>';
-    nearby.forEach(function(d) {
+    html += '<div id="nearby-tol-info" style="color:#8899bb;font-size:0.75rem;margin-bottom:6px;">nd±' + ndTol + '  vd±' + vdTol + ' 范围内共 ' + nearby.length + ' 种</div>';
+    html += '<div id="nearby-items">'; nearby.forEach(function(d) {
       html += '<div class="item" data-name="' + d.name + '"><span class="item-name">' + d.name + '</span><span class="item-nd">nd=' + d.nd + '</span><span class="item-vd">vd=' + d.vd + '</span></div>';
-    });
+    }); html += '</div>';
     nearbyPanel.innerHTML = html;
     nearbyPanel.classList.add('show');
     overlay.classList.add('show');
   }
 
   // Delegate clicks on panel
-  function refreshNearby() { if (lastNearbyName) showNearby(lastNearbyName, lastNdVal, lastVdVal); }
+  function refreshNearby() {
+    if (!lastNearbyName) return;
+    var ndTol = parseFloat(document.getElementById('nd-tol').value) || 0.03;
+    var vdTol = parseFloat(document.getElementById('vd-tol').value) || 1;
+    var nearby = [];
+    data.forEach(function(d) {
+      if (d.name !== lastNearbyName && Math.abs(d.nd - lastNdVal) <= ndTol && Math.abs(d.vd - lastVdVal) <= vdTol) {
+        nearby.push(d);
+      }
+    });
+    nearby.sort(function(a,b) {
+      var da = Math.abs(a.nd - lastNdVal) + Math.abs(a.vd - lastVdVal)/10;
+      var db = Math.abs(b.nd - lastNdVal) + Math.abs(b.vd - lastVdVal)/10;
+      return da - db;
+    });
+    // Update tolerance info
+    var infoEl = document.getElementById('nearby-tol-info');
+    if (infoEl) infoEl.textContent = 'nd±' + ndTol + '  vd±' + vdTol + ' 范围内共 ' + nearby.length + ' 种';
+    // Update items
+    var itemsEl = document.getElementById('nearby-items');
+    if (itemsEl) {
+      var html = '';
+      nearby.forEach(function(d) {
+        html += '<div class="item" data-name="' + d.name + '"><span class="item-name">' + d.name + '</span><span class="item-nd">nd=' + d.nd + '</span><span class="item-vd">vd=' + d.vd + '</span></div>';
+      });
+      itemsEl.innerHTML = html;
+    }
+  }
   document.getElementById('nd-tol').addEventListener('input', refreshNearby);
   document.getElementById('vd-tol').addEventListener('input', refreshNearby);
   nearbyPanel.addEventListener('click', function(e) {
