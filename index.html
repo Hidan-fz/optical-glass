@@ -32,15 +32,32 @@
   .legend-panel label { display: flex; align-items: center; gap: 6px; color: #8899bb; font-size: 0.8rem; cursor: pointer; }
   .dot { display: inline-block; width: 10px; height: 10px; border-radius: 50%; box-shadow: 0 0 6px currentColor; }
 
-@media (max-width: 1000px) {
-  .nearby-panel { left:3vw !important; right:3vw !important; min-width:unset !important; max-width:94vw !important; top:70px !important; padding:16px 14px !important; max-height:55vh !important; }
+
+  .nearby-panel h3 { font-size:1.1rem !important; }
+  .nearby-panel .center-info { font-size:0.9rem !important; }
+  .nearby-panel .item { font-size:0.82rem !important; padding:3px 5px !important; }
+  .nearby-panel .item-nd { width:100px !important; } .nearby-panel .item-vd { width:78px !important; }
+}
+
+  .nearby-panel h3 { font-size:1rem !important; }
+  .nearby-panel .center-info { font-size:0.82rem !important; }
+  .nearby-panel .item { font-size:0.78rem !important; }
+  .nearby-panel .item-nd { width:90px !important; font-size:0.76rem !important; } .nearby-panel .item-vd { width:70px !important; font-size:0.76rem !important; }
+}
+
+@media (max-width: 768px) {
+  #chart { flex: 1; min-height: 0; max-height:55vh; }
+  .header h1 { font-size:1.2rem !important; }
+  .header { padding:4px 10px 0 !important; }
+  .nearby-panel { left:3vw !important; right:3vw !important; min-width:unset !important; max-width:94vw !important; top:60px !important; padding:14px 12px !important; max-height:55vh !important; }
   .nearby-panel h3 { font-size:1.1rem !important; }
   .nearby-panel .center-info { font-size:0.9rem !important; }
   .nearby-panel .item { font-size:0.82rem !important; padding:3px 5px !important; }
   .nearby-panel .item-nd { width:100px !important; } .nearby-panel .item-vd { width:78px !important; }
 }
 @media (max-width: 500px) {
-  .nearby-panel { left:2vw !important; right:2vw !important; max-width:96vw !important; top:60px !important; padding:12px 10px !important; max-height:50vh !important; }
+  #chart { max-height:48vh; }
+  .nearby-panel { left:2vw !important; right:2vw !important; max-width:96vw !important; top:50px !important; padding:10px 8px !important; max-height:50vh !important; }
   .nearby-panel h3 { font-size:1rem !important; }
   .nearby-panel .center-info { font-size:0.82rem !important; }
   .nearby-panel .item { font-size:0.78rem !important; }
@@ -55,7 +72,7 @@
   <p style="font-size:0.75rem;color:#8899bb;">作者：Hidan · 光学边界QQ群：<span id="qq-group" style="cursor:pointer;">1082755388</span>&nbsp;&nbsp;&nbsp;&nbsp;<a href="光学玻璃 nd–vd 图-离线版-20260808.html" download="光学材料 nd-vd图-离线版-20260808.html" style="color:#ffd740;font-size:0.75rem;text-decoration:none;">离线版下载</a></p>
 </div>
 <div class="legend-panel" id="legend" style="padding:0;"></div>
-<div style="display:flex;align-items:center;justify-content:center;gap:10px;padding:0px 20px 2px;">
+<div style="display:flex;align-items:center;justify-content:center;gap:8px;padding:0px 10px 2px;flex-wrap:wrap;">
   <input id="search" type="text" placeholder="模糊搜索材料..." style="width:200px;padding:4px 10px;border:1px solid #334466;border-radius:4px;background:#0d1225;color:#8899bb;font-size:0.8rem;outline:none;" autofocus>
   <button id="nearby-btn">附近的材料</button>
   <label style="color:#8899bb;font-size:0.75rem;">nd±<input id="nd-tol" type="number" value="0.03" step="0.001" min="0.001" max="1" style="width:62px;padding:2px 4px;border:1px solid #334466;border-radius:3px;background:#0d1225;color:#ffd740;font-size:0.75rem;text-align:center;"></label>
