@@ -10,10 +10,10 @@
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
   body { background: linear-gradient(180deg, #060b18 0%, #0a1025 100%); font-family: 'Segoe UI', system-ui, sans-serif; }
-  .header { text-align: center; padding: 16px 20px 0; }
-  .header h1 { font-size: 2rem; font-weight: 500; letter-spacing: 0.06em; color: #e8e8f0; text-shadow: 0 0 20px rgba(180,200,255,0.25); }
-  .header p { font-size: 0.8rem; color: #8899bb; margin-top: 4px; }
-  #chart { width: 95vw; height: calc(95vh - 100px); margin: 0 auto; }
+  .header { text-align: center; padding: 8px 20px 0; }
+  .header h1 { font-size: 1.6rem; font-weight: 500; letter-spacing: 0.04em; color: #e8e8f0; text-shadow: 0 0 20px rgba(180,200,255,0.25); }
+  .header p { font-size: 0.75rem; color: #8899bb; margin-top: 2px; }
+  #chart { width: 95vw; height: calc(100vh - 130px); margin: 0 auto; }
   .toast { position: fixed; top: 50%; left: 50%; transform: translate(-50%,-50%); background: rgba(0,220,130,0.92); color: #000; padding: 10px 24px; border-radius: 6px; font-size: 0.9rem; z-index: 1001; pointer-events: none; opacity: 0; transition: opacity 0.2s; }
   .toast.show { opacity: 1; }
   #nearby-btn { padding:4px 14px;border:1px solid #ffd740;border-radius:4px;background:transparent;color:#ffd740;font-size:0.78rem;cursor:pointer; }
@@ -28,7 +28,7 @@
   .nearby-panel .item:hover { background:#1a3050; color:#e8e8f0; }
   #overlay { display:none; position:fixed; top:0;left:0;width:100%;height:100%;z-index:999; }
   #overlay.show { display:block; }
-  .legend-panel { display: flex; justify-content: center; gap: 28px; flex-wrap: wrap; padding: 6px 20px 2px; row-gap: 2px; }
+  .legend-panel { display: flex; justify-content: center; gap: 22px; flex-wrap: wrap; padding: 4px 20px 0px; row-gap: 0px; }
   .legend-panel label { display: flex; align-items: center; gap: 6px; color: #8899bb; font-size: 0.8rem; cursor: pointer; }
   .dot { display: inline-block; width: 10px; height: 10px; border-radius: 50%; box-shadow: 0 0 6px currentColor; }
 
@@ -55,7 +55,7 @@
   <p style="font-size:0.75rem;color:#8899bb;">作者：Hidan · 光学边界QQ群：<span id="qq-group" style="cursor:pointer;">1082755388</span>&nbsp;&nbsp;&nbsp;&nbsp;<a href="光学玻璃 nd–vd 图-离线版-20260808.html" download="光学材料 nd-vd图-离线版-20260808.html" style="color:#ffd740;font-size:0.75rem;text-decoration:none;">离线版下载</a></p>
 </div>
 <div class="legend-panel" id="legend" style="padding:0;"></div>
-<div style="display:flex;align-items:center;justify-content:center;gap:12px;padding:2px 20px 4px;">
+<div style="display:flex;align-items:center;justify-content:center;gap:10px;padding:0px 20px 2px;">
   <input id="search" type="text" placeholder="模糊搜索材料..." style="width:200px;padding:4px 10px;border:1px solid #334466;border-radius:4px;background:#0d1225;color:#8899bb;font-size:0.8rem;outline:none;" autofocus>
   <button id="nearby-btn">附近的材料</button>
   <label style="color:#8899bb;font-size:0.75rem;">nd±<input id="nd-tol" type="number" value="0.03" step="0.001" min="0.001" max="1" style="width:62px;padding:2px 4px;border:1px solid #334466;border-radius:3px;background:#0d1225;color:#ffd740;font-size:0.75rem;text-align:center;"></label>
