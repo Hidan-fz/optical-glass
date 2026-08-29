@@ -65,6 +65,78 @@ html, body { height: 100%; min-height: 100vh; min-height: 100dvh; margin: 0; }
   .nearby-panel .item { font-size:0.7rem !important; padding:2px 3px !important; }
   .nearby-panel .item-nd { width:80px !important; font-size:0.68rem !important; } .nearby-panel .item-vd { width:62px !important; font-size:0.68rem !important; }
 }
+/* ===== 实时留言 widget ===== */
+#msg-fab {
+  position: fixed; top: 14px; right: 14px; z-index: 2000;
+  display: flex; align-items: center; gap: 6px;
+  padding: 8px 14px; border-radius: 20px;
+  background: #0d1830; border: 1px solid #334466;
+  color: #e8e8f0; font-size: 0.85rem; cursor: pointer;
+  box-shadow: 0 0 20px rgba(0,0,0,0.5);
+  transition: border-color .15s, color .15s;
+  user-select: none;
+}
+#msg-fab:hover { border-color: #ffd740; color: #ffd740; }
+#msg-unread {
+  min-width: 18px; height: 18px; padding: 0 5px; border-radius: 9px;
+  background: #ff4d6a; color: #fff; font-size: 0.7rem; line-height: 18px;
+  text-align: center; display: none;
+}
+#msg-unread:not(:empty) { display: inline-block; }
+#msg-panel {
+  position: fixed; top: 56px; right: 14px; z-index: 2000;
+  width: 420px; max-width: calc(100vw - 28px); max-height: 70vh;
+  background: #0d1830; border: 1px solid #334466; border-radius: 12px;
+  box-shadow: 0 0 30px rgba(0,0,0,0.6);
+  display: none; flex-direction: column; overflow: hidden;
+}
+#msg-panel.show { display: flex; }
+.msg-head {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 10px 14px; border-bottom: 1px solid #1a2a45;
+  color: #e8e8f0; font-size: 0.9rem; font-weight: 500;
+}
+.msg-close { color: #8899bb; cursor: pointer; font-size: 1rem; line-height: 1; }
+.msg-close:hover { color: #ff4d6a; }
+#msg-list { height: 320px; overflow-y: auto; padding: 12px 14px; scrollbar-width: thin; scrollbar-color: #334466 transparent; }
+#msg-list::-webkit-scrollbar { width: 8px; }
+#msg-list::-webkit-scrollbar-track { background: transparent; }
+#msg-list::-webkit-scrollbar-thumb { background: #334466; border-radius: 4px; }
+#msg-list::-webkit-scrollbar-thumb:hover { background: #4a5f82; }
+#msg-pinned { padding: 12px 14px 6px; }
+.msg-pinned-item { background: rgba(255, 215, 64, 0.08); border: 1px solid rgba(255, 215, 64, 0.35); border-radius: 8px; padding: 10px 12px; }
+.msg-pinned-item .meta { font-size: 0.72rem; color: #8899bb; margin-bottom: 4px; display: flex; align-items: center; gap: 6px; }
+.msg-pinned-item .meta .nick { color: #ffd740; font-weight: 600; }
+.pin-tag { background: #ffd740; color: #000; font-size: 0.68rem; padding: 1px 6px; border-radius: 3px; line-height: 1.3; }
+.msg-pinned-item .content { color: #e8e8f0; font-size: 0.85rem; line-height: 1.5; word-break: break-word; white-space: pre-wrap; }
+.msg-item { margin-bottom: 12px; }
+.msg-item .meta { font-size: 0.72rem; color: #8899bb; margin-bottom: 2px; }
+.msg-item .meta .nick { color: #ffd740; }
+.msg-item .content { color: #e8e8f0; font-size: 0.85rem; line-height: 1.5; word-break: break-word; white-space: pre-wrap; }
+.msg-input-area { padding: 10px 12px; border-top: 1px solid #1a2a45; }
+.msg-nick-row {
+  display: flex; align-items: center; gap: 8px; margin-bottom: 8px;
+  color: #8899bb; font-size: 0.8rem;
+}
+#msg-nick { color: #ffd740; font-size: 0.8rem; font-weight: 500; }
+#msg-reroll {
+  padding: 2px 10px; border: 1px solid #334466; border-radius: 4px;
+  background: transparent; color: #8899bb; font-size: 0.75rem; cursor: pointer;
+}
+#msg-reroll:hover { border-color: #ffd740; color: #ffd740; }
+.msg-row { display: flex; gap: 8px; }
+#msg-content {
+  flex: 1; resize: none; height: 34px; padding: 6px 10px;
+  background: #0d1225; border: 1px solid #334466; border-radius: 6px;
+  color: #e8e8f0; font-size: 0.8rem; outline: none; line-height: 1.4;
+}
+#msg-send {
+  padding: 0 16px; border: 1px solid #ffd740; border-radius: 6px;
+  background: transparent; color: #ffd740; font-size: 0.8rem; cursor: pointer;
+}
+#msg-send:hover { background: #ffd740; color: #000; }
+#msg-send:disabled { opacity: 0.5; cursor: not-allowed; }
+
 </style>
 </head>
 <body>
@@ -480,5 +552,275 @@ function showToast(msg) {
   }
 })();
 </script>
+<!-- ===== 实时留言 widget ===== -->
+<div id="msg-fab">💬 留言<span id="msg-unread"></span></div>
+<div id="msg-panel">
+  <div class="msg-head">
+    <span>实时留言</span>
+    <span id="msg-close" class="msg-close">✕</span>
+  </div>
+  <div id="msg-pinned">
+    <div class="msg-pinned-item">
+      <div class="meta"><span class="nick">Hidan</span><span class="pin-tag">置顶</span></div>
+      <div class="content">欢迎大家来到光学边界，联系作者：super-fz 文明留言哦。</div>
+    </div>
+  </div>
+  <div id="msg-list"></div>
+  <div class="msg-input-area">
+    <div class="msg-nick-row">
+      <span>你的昵称：</span><span id="msg-nick"></span>
+      <button id="msg-reroll" type="button" title="换一个名字">🎲 换</button>
+    </div>
+    <div class="msg-row">
+      <textarea id="msg-content" rows="1" maxlength="500" placeholder="说点什么..."></textarea>
+      <button id="msg-send">发送</button>
+    </div>
+  </div>
+</div>
+<script src="https://static.cloudbase.net/cloudbase-js-sdk/2.28.6/cloudbase.full.js"></script>
+<script>
+(function () {
+  // ============ 腾讯云开发 CloudBase 配置（请替换成你自己的） ============
+  // 1) 登录 https://console.cloud.tencent.com/tcb 创建环境
+  // 2) 复制「环境 ID」
+  var CB_ENV = 'glass-map-d6gx5ilud6e5a564d';    // 环境 ID，形如 your-env-xxxx
+  var CB_REGION = 'ap-shanghai';      // 地域：广州 ap-guangzhou / 上海 ap-shanghai
+  var TABLE = 'messages';             // 集合（表）名
+  // =================================================================
+
+  var configured = CB_ENV.indexOf('请填写') === -1 && CB_ENV.length > 3;
+
+  var app = null, db = null;
+  if (configured && typeof cloudbase !== 'undefined') {
+    try {
+      app = cloudbase.init({ env: CB_ENV, region: CB_REGION });
+      db = app.database();
+    } catch (e) { db = null; }
+  }
+
+  var fab = document.getElementById('msg-fab');
+  var panel = document.getElementById('msg-panel');
+  var list = document.getElementById('msg-list');
+  var nickEl = document.getElementById('msg-nick');
+  var rerollBtn = document.getElementById('msg-reroll');
+  var contentInput = document.getElementById('msg-content');
+  var sendBtn = document.getElementById('msg-send');
+  var unreadEl = document.getElementById('msg-unread');
+  var closeBtn = document.getElementById('msg-close');
+
+  var messages = [];
+  var unread = 0;
+  var failedOnce = false;
+
+  // 光学主题随机昵称
+  var OPTICS_NAMES = [
+    '棱镜', '凸透镜', '凹透镜', '反射镜', '分光镜', '滤光片', '光栅', '偏振片', '光纤', '准直镜',
+    '目镜', '物镜', '光阑', '柱面镜', '球面镜', '非球面', '分束器', '衰减片', '波片', '玻片',
+    '光楔', '分划板', '直角棱镜', '五角棱镜', '屋脊棱镜', '道威棱镜', '角锥棱镜', '阿贝棱镜',
+    '菲涅尔透镜', '扩束镜', '场镜', '聚光镜', '光学窗口', '保护玻璃', '载玻片', '盖玻片',
+    '冕牌玻璃', '火石玻璃', '石英玻璃', '萤石', '蓝宝石', '硼硅玻璃', '重火石', '轻火石',
+    '镧冕玻璃', '镧火石玻璃', '高折射玻璃', '低色散玻璃', '红外玻璃', '紫外玻璃',
+    '折射', '色散', '衍射', '干涉', '偏振', '波长', '光子', '光轴', '焦平面', '阿贝数',
+    '色差', '球差', '慧差', '像散', '场曲', '畸变', '放大率', '数值孔径', '视场角', '入瞳',
+    '出瞳', '光程', '相干光', '单色光', '复色光', '全息', '散斑',
+    '阿贝', '菲涅尔', '夫琅禾费', '瑞利', '斯涅尔', '惠更斯', '牛顿',
+    '望远镜', '显微镜', '内窥镜', '潜望镜', '干涉仪', '光谱仪', '单色仪', '准直器', '光斩波器', '缩束器',
+    '变焦镜头', '定焦镜头', '鱼眼镜头', '广角镜头', '长焦镜头', '微距镜头', '偏振分束器', '二向色镜', '分色镜', '半透半反镜',
+    '增透膜', '反射膜', '干涉滤光片', '中性密度片', '光隔离器', '光环形器', '波导', '耦合器', '全反射', '布儒斯特角',
+    '临界角', '焦深', '景深', '分辨率', '对比度', '光强'
+  ];
+
+  var ADJECTIVES = [
+    '忧郁的', '帅气的', '温柔的', '高冷的', '神秘的', '孤独的', '可爱的', '认真的', '随性的', '安静的',
+    '热烈的', '冷静的', '自由的', '优雅的', '冷酷的', '温暖的', '沉默的', '好奇的', '专注的', '执着的',
+    '淡定的', '慵懒的', '敏捷的', '深邃的', '清澈的', '闪耀的', '朦胧的', '沉静的', '明媚的', '清冷的',
+    '开朗的', '内向的', '腼腆的', '爽朗的', '深沉的', '率真的', '睿智的', '聪慧的', '灵动的', '俏皮的',
+    '傲娇的', '呆萌的', '迷糊的', '憨厚的', '机灵的', '倔强的', '勇敢的', '坚强的', '细腻的', '豪爽的',
+    '内敛的', '张扬的', '低调的', '谦逊的', '自信的', '从容的', '不羁的', '浪漫的', '洒脱的', '天真的',
+    '懵懂的', '文静的', '活泼的', '淘气的', '慢热的', '直率的', '清高的', '淡然的', '宁静的', '平和的',
+    '忧伤的', '欢快的', '沉着的', '冷艳的', '温润的', '明亮的',
+    '温婉的', '娇俏的', '软萌的', '冷峻的', '率性的', '奔放的', '内秀的', '犀利的', '清爽的', '恬静的',
+    '稚气的', '青涩的', '成熟的', '老练的', '飒爽的', '温厚的', '宽厚的', '超脱的', '狂野的', '闷骚的',
+    '灵巧的', '机敏的', '稳重的', '高雅的', '轻盈的', '迷离的', '惆怅的', '多情的', '冷淡的', '傲然的'
+  ];
+
+  function randomName() {
+    var adj = ADJECTIVES[Math.floor(Math.random() * ADJECTIVES.length)];
+    var w = OPTICS_NAMES[Math.floor(Math.random() * OPTICS_NAMES.length)];
+    return adj + w;
+  }
+
+  function getNickname() {
+    var name = localStorage.getItem('cb_nickname');
+    if (!name) { name = randomName(); localStorage.setItem('cb_nickname', name); }
+    return name;
+  }
+
+  nickEl.textContent = getNickname();
+
+  function fmtTime(v) {
+    if (v == null) return '';
+    var d;
+    if (v instanceof Date) d = v;
+    else if (typeof v === 'number') d = new Date(v);
+    else if (typeof v === 'string') d = new Date(v);
+    else if (v.$date) d = new Date(v.$date);
+    else return '';
+    if (isNaN(d.getTime())) return '';
+    function p(n) { return n < 10 ? '0' + n : '' + n; }
+    return (d.getMonth() + 1) + '-' + p(d.getDate()) + ' ' + p(d.getHours()) + ':' + p(d.getMinutes());
+  }
+
+  function msgTime(m) {
+    var v = m && m.createdAt;
+    if (v == null) return NaN;
+    if (v instanceof Date) return v.getTime();
+    if (typeof v === 'number') return v;
+    if (typeof v === 'string') return new Date(v).getTime();
+    if (v.$date) return new Date(v.$date).getTime();
+    return NaN;
+  }
+
+  function esc(s) {
+    return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+    });
+  }
+
+  function renderItem(m) {
+    var div = document.createElement('div');
+    div.className = 'msg-item';
+    div.innerHTML =
+      '<div class="meta"><span class="nick">' + esc(m.nickname || '匿名') + '</span> · <span class="time">' + esc(fmtTime(m.createdAt)) + '</span></div>' +
+      '<div class="content">' + esc(m.content) + '</div>';
+    return div;
+  }
+
+  function scrollBottom() { list.scrollTop = list.scrollHeight; }
+  function append(m) { messages.push(m); list.appendChild(renderItem(m)); scrollBottom(); }
+  function renderAll(arr) { messages = arr.slice(); list.innerHTML = ''; arr.forEach(function (m) { list.appendChild(renderItem(m)); }); scrollBottom(); }
+  function updateUnread() { unreadEl.textContent = unread > 0 ? unread : ''; }
+
+  function showHint(text) {
+    var div = document.createElement('div');
+    div.className = 'msg-item';
+    div.innerHTML = '<div class="content" style="color:#ffd740;">' + esc(text) + '</div>';
+    list.appendChild(div);
+    scrollBottom();
+  }
+
+  function poll() {
+    if (!db) return;
+    db.collection(TABLE).orderBy('createdAt', 'asc').limit(100).get()
+      .then(function (res) {
+        var monthAgo = Date.now() - 30 * 24 * 60 * 60 * 1000;
+        var arr = (res && res.data) ? res.data.filter(function (m) {
+          var t = msgTime(m);
+          return !isNaN(t) && t >= monthAgo;
+        }) : [];
+        if (!arr.length) return;
+        failedOnce = false;
+        var lastKnown = messages.length ? messages[messages.length - 1]._id : null;
+        var idx = lastKnown != null ? arr.findIndex(function (m) { return m._id === lastKnown; }) : -1;
+        if (idx === -1) {
+          renderAll(arr);
+        } else if (idx < arr.length - 1) {
+          for (var i = idx + 1; i < arr.length; i++) {
+            append(arr[i]);
+            if (!panel.classList.contains('show')) { unread++; }
+          }
+          updateUnread();
+        }
+      })
+      .catch(function (err) {
+        if (!failedOnce) { failedOnce = true; showHint('连接失败：' + (err && (err.message || err.code) ? (err.message || err.code) : '未知错误')); }
+      });
+  }
+
+  // ===== 文明用语关键词黑名单（可自行增删） =====
+  var BAD_WORDS = ['傻逼', 'sb', '煞笔', '草泥马', 'cnm', '操你', '你妈', '妈的', '去死', 'fuck', 'shit', 'bitch'];
+  // ===============================================
+
+  function checkBadWord(text) {
+    if (!text) return null;
+    var t = String(text).toLowerCase().replace(/\s+/g, '');
+    for (var i = 0; i < BAD_WORDS.length; i++) {
+      if (BAD_WORDS[i] && t.indexOf(String(BAD_WORDS[i]).toLowerCase()) !== -1) return BAD_WORDS[i];
+    }
+    return null;
+  }
+
+  function send() {
+    if (!app) { alert('云开发 SDK 未加载或未配置：请检查环境 ID，并确认能联网加载 cloudbase.full.js。'); return; }
+    var nickname = getNickname();
+    var content = contentInput.value.trim();
+    if (!content) { contentInput.focus(); return; }
+    var bad = checkBadWord(content);
+    if (bad) { showHint('⚠ 内容含不文明用语，请修改后再发。'); contentInput.focus(); return; }
+    sendBtn.disabled = true;
+    app.callFunction({ name: 'postMessage', data: { nickname: nickname, content: content } })
+      .then(function (res) {
+        sendBtn.disabled = false;
+        var result = res && res.result;
+        if (result && result.ok) {
+          contentInput.value = '';
+          append({ _id: result.id, nickname: nickname, content: content, createdAt: new Date() });
+          poll();
+        } else {
+          alert(result && result.msg ? result.msg : '发送失败');
+        }
+      })
+      .catch(function (err) {
+        sendBtn.disabled = false;
+        alert('发送失败：' + (err && err.message ? err.message : '未知错误'));
+      });
+  }
+
+  fab.addEventListener('click', function () {
+    panel.classList.toggle('show');
+    if (panel.classList.contains('show')) {
+      unread = 0; updateUnread();
+      scrollBottom();
+      contentInput.focus();
+    }
+  });
+  closeBtn.addEventListener('click', function () { panel.classList.remove('show'); });
+  rerollBtn.addEventListener('click', function () {
+    var name = randomName();
+    localStorage.setItem('cb_nickname', name);
+    nickEl.textContent = name;
+  });
+  sendBtn.addEventListener('click', send);
+  contentInput.addEventListener('keydown', function (e) {
+    if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); send(); }
+  });
+
+  if (!configured) {
+    showHint('⚠ 尚未配置 CloudBase：请打开本文件，在脚本顶部填写环境 ID（CB_ENV）。');
+  } else if (typeof cloudbase === 'undefined') {
+    showHint('⚠ 无法加载云开发 SDK（cloudbase.full.js），请检查网络。');
+  } else {
+    // 匿名登录：失败时把真实错误显示出来，便于排查
+    var auth = null;
+    try { auth = (typeof app.auth === 'function') ? app.auth() : app.auth; } catch (e) { auth = null; }
+    if (!auth) { showHint('⚠ auth() 调用失败，SDK 可能加载异常。'); return; }
+    var begin = function () { poll(); setInterval(poll, 3000); };
+    var signed = null;
+    try { signed = auth.signInAnonymously(); } catch (e) { signed = null; }
+    if (signed && typeof signed.then === 'function') {
+      signed.then(function (res) {
+        var err = res && res.error;
+        if (err) { showHint('⚠ 匿名登录失败：' + (err.message || err.code || JSON.stringify(err))); return; }
+        begin();
+      }).catch(function (err) {
+        showHint('⚠ 匿名登录失败：' + (err && err.message ? err.message : String(err)));
+      });
+    } else {
+      begin();
+    }
+  }
+})();
+</script>
+
 </body>
 </html>
