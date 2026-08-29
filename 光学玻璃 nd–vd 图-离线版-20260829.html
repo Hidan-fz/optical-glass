@@ -714,6 +714,22 @@ function showToast(msg) {
     scrollBottom();
   }
 
+  // 把 SDK 抛出的无意义错误码翻译成人话，方便自查
+  function friendlyErr(err) {
+    var msg = (err && (err.message || err.code)) ? (err.message || err.code) : (err ? String(err) : '未知错误');
+    var m = String(msg).toLowerCase();
+    if (m.indexOf('network request error') !== -1 || m.indexOf('network error') !== -1 || m.indexOf('failed to fetch') !== -1) {
+      return msg + '（多为浏览器拦截：请到 CloudBase 控制台「登录授权」开启匿名登录，并在「安全来源/Web 安全域名」加入当前网站域名）';
+    }
+    if (m.indexOf('permission') !== -1 || m.indexOf('denied') !== -1) {
+      return msg + '（权限不足：请把 messages 集合读取权限设为「所有用户可读」）';
+    }
+    if (m.indexOf('function_not_found') !== -1) {
+      return msg + '（云函数 postMessage 未部署或名称不一致）';
+    }
+    return msg;
+  }
+
   function poll() {
     if (!db) return;
     db.collection(TABLE).orderBy('createdAt', 'asc').limit(100).get()
@@ -738,7 +754,7 @@ function showToast(msg) {
         }
       })
       .catch(function (err) {
-        if (!failedOnce) { failedOnce = true; showHint('连接失败：' + (err && (err.message || err.code) ? (err.message || err.code) : '未知错误')); }
+        if (!failedOnce) { failedOnce = true; showHint('连接失败：' + friendlyErr(err)); }
       });
   }
 
@@ -777,7 +793,7 @@ function showToast(msg) {
       })
       .catch(function (err) {
         sendBtn.disabled = false;
-        alert('发送失败：' + (err && err.message ? err.message : '未知错误'));
+        alert('发送失败：' + friendlyErr(err));
       });
   }
 
@@ -815,10 +831,10 @@ function showToast(msg) {
     if (signed && typeof signed.then === 'function') {
       signed.then(function (res) {
         var err = res && res.error;
-        if (err) { showHint('⚠ 匿名登录失败：' + (err.message || err.code || JSON.stringify(err))); return; }
+        if (err) { showHint('⚠ 匿名登录失败：' + friendlyErr(err)); return; }
         begin();
       }).catch(function (err) {
-        showHint('⚠ 匿名登录失败：' + (err && err.message ? err.message : String(err)));
+        showHint('⚠ 匿名登录失败：' + friendlyErr(err));
       });
     } else {
       begin();

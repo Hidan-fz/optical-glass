@@ -2,15 +2,15 @@
 // 留言审核云函数 postMessage（部署到：云开发控制台 -> 云函数）
 // 把本文件内容粘贴到云函数的 index.js
 // 依赖（package.json，见下方注释或我的说明）：
-//   "wx-server-sdk": "~2.6.3"                      （必装，读写数据库）
+//   "@cloudbase/node-sdk": "~3.18.3"              （必装，读写数据库）
 //   "tencentcloud-sdk-nodejs": "latest"            （可选，用于 TMS AI 审核）
 // 可选环境变量（用于 TMS AI 审核；不配则只做关键词过滤）：
 //   TENCENT_SECRET_ID / TENCENT_SECRET_KEY / TENCENT_REGION
 // ============================================================
 
-const cloud = require('wx-server-sdk');
-cloud.init({ env: cloud.DYNAMIC_CURRENT_ENV });
-const db = cloud.database();
+const tcb = require('@cloudbase/node-sdk');
+const app = tcb.init({ env: tcb.SYMBOL_CURRENT_ENV });
+const db = app.database();
 
 // 关键词黑名单（服务端执行，别人改网页代码也绕不过去）
 const BAD_WORDS = ['傻逼', 'sb', '煞笔', '草泥马', 'cnm', '操你', '你妈', '妈的', '去死', 'fuck', 'shit', 'bitch'];
@@ -79,7 +79,7 @@ exports.main = async (event, context) => {
     const res = await db.collection('messages').add({
       data: { nickname, content, createdAt: db.serverDate() }
     });
-    return { ok: true, id: res._id };
+    return { ok: true, id: res.id };
   } catch (e) {
     return { ok: false, msg: '写入失败：' + (e.message || e) };
   }

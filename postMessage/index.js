@@ -1,7 +1,7 @@
 // 留言审核云函数 postMessage
-const cloud = require('wx-server-sdk');
-cloud.init({ env: cloud.DYNAMIC_CURRENT_ENV });
-const db = cloud.database();
+const tcb = require('@cloudbase/node-sdk');
+const app = tcb.init({ env: tcb.SYMBOL_CURRENT_ENV });
+const db = app.database();
 
 // 关键词黑名单（服务端执行，别人改网页代码也绕不过去）
 const BAD_WORDS = ['傻逼', 'sb', '煞笔', '草泥马', 'cnm', '操你', '你妈', '妈的', '去死', 'fuck', 'shit', 'bitch'];
@@ -67,7 +67,7 @@ exports.main = async (event, context) => {
     const res = await db.collection('messages').add({
       data: { nickname, content, createdAt: db.serverDate() }
     });
-    return { ok: true, id: res._id };
+    return { ok: true, id: res.id };
   } catch (e) {
     return { ok: false, msg: '写入失败：' + (e.message || e) };
   }
