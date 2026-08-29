@@ -812,6 +812,12 @@ function showToast(msg) {
     }
   });
   closeBtn.addEventListener('click', function () { panel.classList.remove('show'); });
+  // 点击留言板以外的区域关闭留言板
+  document.addEventListener('click', function (e) {
+    if (!panel.classList.contains('show')) return;
+    if (panel.contains(e.target) || fab.contains(e.target)) return;
+    panel.classList.remove('show');
+  });
   rerollBtn.addEventListener('click', function () {
     var name = randomName();
     localStorage.setItem('cb_nickname', name);
