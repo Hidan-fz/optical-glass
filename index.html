@@ -137,6 +137,11 @@ html, body { height: 100%; min-height: 100vh; min-height: 100dvh; margin: 0; }
 #msg-send:hover { background: #ffd740; color: #000; }
 #msg-send:disabled { opacity: 0.5; cursor: not-allowed; }
 
+/* 移动端留言板适配：全宽显示，避免竖屏超出屏幕 */
+@media (max-width: 768px) {
+  #msg-panel { left: 10px; right: 10px; width: auto; max-width: none; }
+}
+
 </style>
 </head>
 <body>
